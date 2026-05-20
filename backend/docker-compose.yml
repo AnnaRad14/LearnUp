@@ -1,0 +1,24 @@
+services:
+  # Наша база даних MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: learnup-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  # Наш Spring Boot бекенд
+  backend:
+    build: .
+    container_name: learnup-backend
+    ports:
+      - "8080:8080" # 🔥 ТЕПЕР ПОРТ ПРАВИЛЬНИЙ!
+    depends_on:
+      - mongodb
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/learnup
+      SPRING_MAIN_ALLOW_BEAN_DEFINITION_OVERRIDING: "true"
+
+volumes:
+  mongo-data: # Тепер тут порожньо, як і має бути за синтаксисом yaml
